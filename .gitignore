@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local runtime data (JSON store, MVP 단계 — DB 도입 전까지)
+/data/*.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

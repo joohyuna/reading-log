@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Reading Log
 
-## Getting Started
+읽은 책을 기록하고 관리하는 개인용 독서 기록 앱입니다.
 
-First, run the development server:
+## 기능
+
+- 책 등록/조회/수정/삭제
+- 읽기 상태 관리: 읽고 싶어요 / 읽는중 / 완독 / 중단
+- 별점, 한줄평, 인상 깊은 문장 기록
+- 연간 목표 권수 설정, 월별 독서량 통계
+
+## 기술 스택
+
+- Next.js 16 (App Router, Turbopack)
+- React 19, TypeScript
+- Tailwind CSS v4
+- react-hook-form + zod (폼/API 공용 검증)
+- pnpm
+
+데이터는 현재 로컬 JSON 파일(`data/reading-log.json`)에 저장되며, 추후 MongoDB로 교체할 예정입니다. 자세한 내용은 `docs/architecture/ARCHITECTURE.md`와 `docs/rfcs/`를 참고하세요.
+
+## 시작하기
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[http://localhost:3000](http://localhost:3000)에서 확인할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 개발 명령어
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm dev      # 개발 서버 (Turbopack)
+pnpm build    # 프로덕션 빌드
+pnpm start    # 프로덕션 서버 실행
+pnpm lint     # 린트
+```
 
-## Learn More
+## 프로젝트 문서
 
-To learn more about Next.js, take a look at the following resources:
+이 저장소의 작업 규칙과 문서 구조는 [`CLAUDE.md`](./CLAUDE.md)에 정의되어 있습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+docs/
+├── prd/            # 제품 요구사항
+├── architecture/   # 현재 시스템 구조 스냅샷
+├── adr/            # 기술 결정 기록
+└── rfcs/           # 기능별 구현 계획
+```

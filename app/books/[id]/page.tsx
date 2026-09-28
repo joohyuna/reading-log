@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { getBookById } from "@/lib/data/books";
 import { BookDetailEditor } from "@/components/BookDetailEditor";
 
@@ -8,6 +9,8 @@ export default async function BookDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  // DB 데이터를 요청 시점에 읽도록 빌드 시 프리렌더를 막는다.
+  await connection();
   const { id } = await params;
   const book = await getBookById(id);
 

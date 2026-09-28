@@ -33,7 +33,8 @@ public/         # 정적 파일
 TODO — 미정.
 
 ## 향후 고려사항
-- **mini-schedule 연동**: 사용자가 보유한 별도 로컬 프로젝트 "mini-schedule"도 JSON 파일 기반 저장 방식을 쓰고 있다. reading-log가 로컬 JSON에서 실제 DB(MongoDB 등)로 옮겨갈 때, mini-schedule과의 연동(예: 같은 Atlas 클러스터 공유)을 함께 고려할 것. 통합 방식(공유 DB/데이터 임포트/별도 서비스 등)은 아직 미정 — 실제 DB 전환 RFC를 쓸 때 다시 논의한다.
+- **MongoDB 전환 (진행 예정)**: `docs/rfcs/2026-09-29-mongodb-migration.md` — todo·mini-schedule이 쓰는 기존 Atlas 클러스터에 `reading-log` DB를 추가하고, Prisma로 접근한다 (ADR-0001, ADR-0002).
+- **mini-schedule 연동**: 사용자의 별도 프로젝트 "mini-schedule"(`lecture-mini-schedule`)은 이미 MongoDB Atlas(`mini-diary` DB) + Prisma + Auth.js(`User` 모델)를 쓴다. 연동 방식(계정 공유/데이터 연계 등)은 아직 미정 — reading-log DB 전환 후 별도 RFC에서 논의한다.
 
 ## 참고
 - Next.js 16은 API가 이전 버전과 다를 수 있어, 작업 전 `node_modules/next/dist/docs/`의 문서를 확인할 것 (`AGENTS.md` 참고).

@@ -1,0 +1,38 @@
+// Prisma schema — Reading Log
+// 반영: pnpm exec prisma db push   (MongoDB는 마이그레이션 없음)
+// 생성: pnpm exec prisma generate  (postinstall 에서도 자동 실행)
+// 입력 검증은 zod(schemas/)가 담당한다 — 필드를 바꾸면 schemas/book.ts, schemas/goal.ts도 함께 수정할 것.
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// id는 lib/data/books.ts가 randomUUID()로 만든 문자열을 그대로 _id로 쓴다.
+// @db.ObjectId를 붙이지 않아야 UUID 문자열이 허용되고, URL(/books/[id])이 바뀌지 않는다.
+model Book {
+  id         String   @id @map("_id")
+  title      String
+  author     String?
+  status     String // "want-to-read" | "reading" | "completed" | "abandoned" — 값 검증은 zod가 담당
+  rating     Int?
+  review     String?
+  quotes     String[]
+  addedAt    String // ISO 8601 문자열 — DateTime 아님, 기존 데이터·zod 스키마와 동일
+  startedAt  String?
+  finishedAt String?
+
+  @@map("books")
+}
+
+// 연도를 _id로 써서 연도당 목표 1건을 보장한다.
+model Goal {
+  year        Int @id @map("_id")
+  targetCount Int
+
+  @@map("goals")
+}

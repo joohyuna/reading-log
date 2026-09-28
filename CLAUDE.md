@@ -112,8 +112,10 @@ docs/
 
 - 아키텍처 현황: `docs/architecture/ARCHITECTURE.md`
 - 진행 중인 ADR 목록: `docs/adr/`
-- 이슈 트래커: TODO (GitHub Issues URL)
+- 이슈 트래커: https://github.com/joohyuna/reading-log/issues
 - 초기 세팅 RFC: `docs/rfcs/2026-09-15-project-initial-setup.md`
+- MongoDB 전환 RFC: `docs/rfcs/2026-09-29-mongodb-migration.md` (PR #6에서 완료)
+- 보류 중: mini-schedule 연동 — 이슈 #7 (착수 시 RFC부터 작성)
 
 ---
 

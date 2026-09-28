@@ -49,6 +49,13 @@ public/         # 정적 파일
 - 기존 JSON 데이터 이관: `node --env-file=.env scripts/migrate-json-to-mongo.mjs [JSON 경로]` (`_id` 기준 upsert, 재실행 안전, DB 이름 검사 포함). 예전 `data/reading-log.json`은 백업으로만 남는다 (git-ignored)
 - Windows에서 dev 서버 실행 중에는 Prisma 엔진 파일이 잠겨 `pnpm build`(`prisma generate`)가 `EPERM`으로 실패한다 — 빌드 전 dev 서버를 종료할 것
 
+### 새 기기 셋업 (집 PC / 회사 PC)
+1. `git pull` → `pnpm install` (postinstall에서 `prisma generate` 자동 실행)
+2. `.env.example`을 복사해 `.env` 생성, `DATABASE_URL` 입력 (DB 이름 `reading-log`)
+3. Atlas 접속이 막히면 Atlas 웹에서 해당 기기 IP를 네트워크 허용 목록에 추가
+4. 그 기기의 `data/reading-log.json`에 예전 데이터가 있으면 이관 스크립트 실행
+5. GitHub 이슈/PR 작업을 하려면 기기마다 `gh auth login` 필요 (gh 인증은 기기별)
+
 ## 인증
 TODO — 미정. (단일 사용자 전제, `userId` 구분 없음)
 

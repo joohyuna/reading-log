@@ -114,7 +114,7 @@ model Goal {
 - [x] `scripts/migrate-json-to-mongo.mjs` 작성 및 기존 데이터 이관 (2026-09-29 이 PC의 JSON은 0건 — 다른 기기에 데이터가 있으면 그 기기에서 실행)
 - [x] `lib/data/store.ts` 제거
 - [x] `docs/architecture/ARCHITECTURE.md` 데이터 계층 · 환경 변수 섹션 갱신
-- [ ] 검증 (아래) 후 PR
+- [x] 검증 (아래) 후 PR — #6 머지 완료 (2026-09-29)
 
 ## 변경 파일
 - 신규: `prisma/schema.prisma`, `lib/prisma.ts`, `scripts/migrate-json-to-mongo.mjs`, `.env.example`, `docs/adr/0001-mongodb-atlas-shared-cluster.md`, `docs/adr/0002-prisma-orm.md`

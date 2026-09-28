@@ -37,7 +37,7 @@ yarn-error.log*
 # vercel
 .vercel
 
-# local runtime data (JSON store, MVP 단계 — DB 도입 전까지)
+# legacy local JSON store (MongoDB 전환 전 데이터 — 이관용 백업으로만 보관)
 /data/*.json
 
 # typescript

@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import { getBooks } from "@/lib/data/books";
 import { BookList } from "@/components/BookList";
 
 export default async function Home() {
+  // DB 데이터를 요청 시점에 읽도록 빌드 시 프리렌더를 막는다.
+  await connection();
   const books = await getBooks();
 
   return (

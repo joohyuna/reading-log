@@ -1,7 +1,7 @@
 # RFC: 로컬 JSON → MongoDB Atlas 전환
 
 - **날짜**: 2026-09-29
-- **상태**: 초안 (Draft)
+- **상태**: 구현 완료
 - **관련 ADR**: [ADR-0001](../adr/0001-mongodb-atlas-shared-cluster.md), [ADR-0002](../adr/0002-prisma-orm.md)
 - **관련 이슈**: #1 Prisma 도입 · #2 데이터 계층 교체 · #3 동적 렌더링 고정 · #4 마이그레이션 스크립트 · #5 ARCHITECTURE.md 갱신
 
@@ -103,17 +103,17 @@ model Goal {
 - 실행 결과(건수)를 출력하고, 원본 JSON은 삭제하지 않는다 (백업으로 보관).
 
 ## 작업 단계
-- [ ] mini-schedule 연결 문자열을 복사해 DB 이름을 `reading-log`로 바꾸고 `.env`에 설정 — 사용자 작업 (이 PC의 IP가 Atlas 허용 목록에 있는지 확인)
-- [ ] `pnpm add @prisma/client@6.19.3` / `pnpm add -D prisma@6.19.3`, `pnpm-workspace.yaml` `allowBuilds` 추가, `package.json` 스크립트 추가
-- [ ] `.env.example` 추가 (자리표시자만) + `.gitignore`에 `!.env.example` 예외 추가
-- [ ] `prisma/schema.prisma` 작성, `pnpm exec prisma db push`
-- [ ] `lib/prisma.ts` 싱글톤 작성
-- [ ] `lib/data/books.ts` Prisma 구현으로 교체 (`toBook()` 변환 포함)
-- [ ] `lib/data/goals.ts` Prisma 구현으로 교체
-- [ ] 페이지 3곳 동적 렌더링 고정 (`connection()`)
-- [ ] `scripts/migrate-json-to-mongo.mjs` 작성 및 기존 데이터 이관
-- [ ] `lib/data/store.ts` 제거
-- [ ] `docs/architecture/ARCHITECTURE.md` 데이터 계층 · 환경 변수 섹션 갱신
+- [x] mini-schedule 연결 문자열을 복사해 DB 이름을 `reading-log`로 바꾸고 `.env`에 설정 — 사용자 작업 (이 PC의 IP가 Atlas 허용 목록에 있는지 확인)
+- [x] `pnpm add @prisma/client@6.19.3` / `pnpm add -D prisma@6.19.3`, `pnpm-workspace.yaml` `allowBuilds` 추가, `package.json` 스크립트 추가
+- [x] `.env.example` 추가 (자리표시자만) + `.gitignore`에 `!.env.example` 예외 추가
+- [x] `prisma/schema.prisma` 작성, `pnpm exec prisma db push`
+- [x] `lib/prisma.ts` 싱글톤 작성
+- [x] `lib/data/books.ts` Prisma 구현으로 교체 (`toBook()` 변환 포함)
+- [x] `lib/data/goals.ts` Prisma 구현으로 교체
+- [x] 페이지 3곳 동적 렌더링 고정 (`connection()`)
+- [x] `scripts/migrate-json-to-mongo.mjs` 작성 및 기존 데이터 이관 (2026-09-29 이 PC의 JSON은 0건 — 다른 기기에 데이터가 있으면 그 기기에서 실행)
+- [x] `lib/data/store.ts` 제거
+- [x] `docs/architecture/ARCHITECTURE.md` 데이터 계층 · 환경 변수 섹션 갱신
 - [ ] 검증 (아래) 후 PR
 
 ## 변경 파일

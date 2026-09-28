@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import { getBooks } from "@/lib/data/books";
 import { getGoal } from "@/lib/data/goals";
 import { MonthlyChart } from "@/components/MonthlyChart";
 import { GoalForm } from "@/components/GoalForm";
 
 export default async function StatsPage() {
+  // DB 데이터를 요청 시점에 읽도록 빌드 시 프리렌더를 막는다.
+  await connection();
   const year = new Date().getFullYear();
   const [books, goal] = await Promise.all([getBooks(), getGoal(year)]);
 

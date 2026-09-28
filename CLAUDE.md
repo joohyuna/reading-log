@@ -85,12 +85,14 @@ docs/
   ```
   app/            # App Router 라우트, 레이아웃, 전역 스타일
   components/     # 공용 UI 컴포넌트
-  lib/            # 유틸리티
+  lib/            # 유틸리티, Prisma 클라이언트(lib/prisma.ts), 데이터 계층(lib/data/)
+  prisma/         # Prisma 스키마
   schemas/        # zod 스키마 (폼 + API 공용)
+  scripts/        # 1회성 운영 스크립트 (JSON → MongoDB 이관 등)
   docs/           # PRD / ADR / RFC / 아키텍처 문서
   public/         # 정적 파일
   ```
-- **데이터 저장 방식**: TODO (DB, ORM 등)
+- **데이터 저장 방식**: MongoDB Atlas(`reading-log` DB, todo·mini-schedule과 같은 클러스터) + Prisma. DB 문서 모양은 `prisma/schema.prisma`, 입력 검증은 zod — 필드 변경 시 양쪽을 함께 수정한다 (ADR-0001, ADR-0002).
 - **디자인 시스템**: TODO (UI 컴포넌트 라이브러리 사용 여부)
 
 ---

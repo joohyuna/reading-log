@@ -1,25 +1,18 @@
-import { readData, writeData } from "./store";
+import { prisma } from "@/lib/prisma";
 import type { ReadingGoal } from "@/schemas/goal";
 
 export async function getGoal(year: number): Promise<ReadingGoal | undefined> {
-  const data = await readData();
-  return data.goals.find((goal) => goal.year === year);
+  const goal = await prisma.goal.findUnique({ where: { year } });
+  return goal ?? undefined;
 }
 
 export async function setGoal(
   year: number,
   targetCount: number
 ): Promise<ReadingGoal> {
-  const data = await readData();
-  const index = data.goals.findIndex((goal) => goal.year === year);
-  const goal: ReadingGoal = { year, targetCount };
-
-  if (index === -1) {
-    data.goals.push(goal);
-  } else {
-    data.goals[index] = goal;
-  }
-
-  await writeData(data);
-  return goal;
+  return prisma.goal.upsert({
+    where: { year },
+    create: { year, targetCount },
+    update: { targetCount },
+  });
 }

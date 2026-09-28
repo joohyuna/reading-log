@@ -1,71 +1,83 @@
 import { randomUUID } from "crypto";
-import { readData, writeData } from "./store";
-import type { Book, BookInput, BookUpdate } from "@/schemas/book";
+import type { Book as BookRow } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import type { Book, BookInput, BookStatus, BookUpdate } from "@/schemas/book";
+
+// Prisma는 비어 있는 선택 필드를 null로 돌려주지만, Book 타입(zod optional)은 undefined를 기대한다.
+function toBook(row: BookRow): Book {
+  return {
+    id: row.id,
+    title: row.title,
+    author: row.author ?? undefined,
+    status: row.status as BookStatus,
+    rating: row.rating ?? undefined,
+    review: row.review ?? undefined,
+    quotes: row.quotes,
+    addedAt: row.addedAt,
+    startedAt: row.startedAt ?? undefined,
+    finishedAt: row.finishedAt ?? undefined,
+  };
+}
 
 export async function getBooks(): Promise<Book[]> {
-  const data = await readData();
-  return data.books;
+  // JSON 저장 시절과 같은 순서(추가 순)를 유지한다.
+  const rows = await prisma.book.findMany({ orderBy: { addedAt: "asc" } });
+  return rows.map(toBook);
 }
 
 export async function getBookById(id: string): Promise<Book | undefined> {
-  const data = await readData();
-  return data.books.find((book) => book.id === id);
+  const row = await prisma.book.findUnique({ where: { id } });
+  return row ? toBook(row) : undefined;
 }
 
 export async function addBook(input: BookInput): Promise<Book> {
-  const data = await readData();
   const now = new Date().toISOString();
 
-  const book: Book = {
-    id: randomUUID(),
-    title: input.title,
-    author: input.author || undefined,
-    status: input.status,
-    quotes: [],
-    addedAt: now,
-    ...(input.status === "reading" ? { startedAt: now } : {}),
-    ...(input.status === "completed" ? { startedAt: now, finishedAt: now } : {}),
-  };
+  const row = await prisma.book.create({
+    data: {
+      id: randomUUID(),
+      title: input.title,
+      author: input.author || null,
+      status: input.status,
+      quotes: [],
+      addedAt: now,
+      ...(input.status === "reading" ? { startedAt: now } : {}),
+      ...(input.status === "completed" ? { startedAt: now, finishedAt: now } : {}),
+    },
+  });
 
-  data.books.push(book);
-  await writeData(data);
-  return book;
+  return toBook(row);
 }
 
 export async function updateBook(
   id: string,
   patch: BookUpdate
 ): Promise<Book | undefined> {
-  const data = await readData();
-  const index = data.books.findIndex((book) => book.id === id);
-  if (index === -1) return undefined;
+  const existing = await prisma.book.findUnique({ where: { id } });
+  if (!existing) return undefined;
 
-  const existing = data.books[index];
   const now = new Date().toISOString();
-  const updated: Book = { ...existing, ...patch };
-
-  if (updated.author === "") {
-    updated.author = undefined;
-  }
+  // Prisma update에서 undefined는 "변경 안 함"이므로, 저자를 비울 때는 null을 넘긴다.
+  const data: Parameters<typeof prisma.book.update>[0]["data"] = {
+    ...patch,
+    ...(patch.author === "" ? { author: null } : {}),
+  };
 
   if (patch.status && patch.status !== existing.status) {
     if (patch.status === "reading" && !existing.startedAt) {
-      updated.startedAt = now;
+      data.startedAt = now;
     }
     if (patch.status === "completed" && !existing.finishedAt) {
-      updated.finishedAt = now;
+      data.finishedAt = now;
     }
   }
 
-  data.books[index] = updated;
-  await writeData(data);
-  return updated;
+  const row = await prisma.book.update({ where: { id }, data });
+  return toBook(row);
 }
 
 export async function deleteBook(id: string): Promise<boolean> {
-  const data = await readData();
-  const before = data.books.length;
-  data.books = data.books.filter((book) => book.id !== id);
-  await writeData(data);
-  return data.books.length < before;
+  // delete()는 없는 id에 예외를 던지므로 deleteMany로 존재 여부를 count로 판단한다.
+  const { count } = await prisma.book.deleteMany({ where: { id } });
+  return count > 0;
 }

@@ -76,8 +76,8 @@ docs/
 
 ## 5. 코드 스타일 / 컨벤션
 
-- **커밋 메시지 규칙**: TODO (예: Conventional Commits — `feat:`, `fix:`, `refactor:`)
-- **브랜치 전략**: TODO (예: `feature/`, `fix/` 프리픽스 + PR 필수)
+- **커밋 메시지 규칙**: Conventional Commits — `feat:` / `fix:` / `refactor:` / `chore:` / `docs:` 프리픽스 + 한 줄 요약, 필요하면 본문에 변경 이유·내용을 적는다. 이슈 단위로 커밋을 나누고, 관련 이슈는 `Closes #N`(완료) 또는 `Refs #N`(참조)로 연결한다.
+- **브랜치 전략**: 코드 변경은 `master`에서 `feature/` 또는 `fix/` 프리픽스 브랜치를 만들어 작업하고, PR로 `master`에 병합한다. 병합은 사용자가 브라우저 확인 후 승인할 때만 하고, 병합 후 작업 브랜치는 삭제한다. 문서만 바꾸는 작업(예: "메모리 저장해줘")은 `master`에 직접 커밋할 수 있지만, 푸시는 사용자 확인 후에 한다 (6번 참고).
 - **테스트**: TODO (예: 새 기능은 반드시 단위 테스트 동반, `pnpm test`로 확인)
 - **린트/포맷**: TODO (예: 커밋 전 `pnpm lint` 통과 필수)
 - **폼 · 검증 규칙**: zod 스키마를 단일 소스로 정의하고, react-hook-form(`@hookform/resolvers/zod`)과 API 라우트(Route Handler)의 입력 검증 양쪽에서 재사용한다. 스키마는 `schemas/`에 둔다. 세부 네이밍 규칙은 TODO.
